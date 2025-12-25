@@ -1,12 +1,11 @@
 import os
-import json
 import requests
 
 class TrelloClient:
     def __init__(self):
-        self.api_key=os.environ.get("TRELLO_API_KEY"),
-        self.api_secret=os.environ.get("TRELLO_SECRET"),
-        self.token=os.environ.get("TRELLO_TOKEN")
+        self.api_key = os.environ.get("TRELLO_API_KEY"),
+        self.api_secret = os.environ.get("TRELLO_SECRET"),
+        self.token = os.environ.get("TRELLO_TOKEN")
 
     def get_cards_on_board(self, board_id: str) -> dict:
         r = requests.get(
@@ -17,3 +16,4 @@ class TrelloClient:
         )
         
         return r.text
+    
