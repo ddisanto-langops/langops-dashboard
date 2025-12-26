@@ -1,0 +1,100 @@
+{
+  "id": "661059ed2dff8fb73a6cb734",
+  "agent": null,
+  "badges": {
+    "fogbugz": "",
+    "checkItems": 18,
+    "checkItemsChecked": 0,
+    "checkItemsEarliestDue": null,
+    "comments": 0,
+    "attachments": 0,
+    "description": true,
+    "due": null,
+    "dueComplete": false,
+    "start": null,
+    "lastUpdatedByAi": false,
+    "attachmentsByType": {
+      "trello": {
+        "board": 0,
+        "card": 0
+      }
+    },
+    "externalSource": null,
+    "location": false,
+    "votes": 0,
+    "maliciousAttachments": 0,
+    "viewingMemberVoted": false,
+    "subscribed": false
+  },
+  "checkItemStates": [],
+  "closed": false,
+  "dueComplete": false,
+  "dateLastActivity": "2025-12-02T16:57:11.880Z",
+  "desc": "TYPE: PT Article\n\n**Filename:**\n\n[ID]-[T-i-t-l-e]- [AU][word count]\n\n**PATH:**\n\n[MT] → [MTPE] → [PR + Q/A (human) ] → [TTA]",
+  "descData": {
+    "emoji": {}
+  },
+  "due": null,
+  "dueReminder": null,
+  "email": null,
+  "idBoard": "5176af831f22073e1e0012e3",
+  "idChecklists": [
+    "661059ed2dff8fb73a6cb7b7",
+    "661059ed2dff8fb73a6cb7a5",
+    "661059ed2dff8fb73a6cb7c1",
+    "661059ed2dff8fb73a6cb7b3",
+    "6610610c76c0c0095e094b52",
+    "6776f57e575710b2e149c109"
+  ],
+  "idList": "65de10ea8da31d086399c069",
+  "idMembers": [],
+  "idMembersVoted": [],
+  "idShort": 9879,
+  "idAttachmentCover": null,
+  "labels": [
+    {
+      "id": "65a69ef7128bbe9b3123689c",
+      "idBoard": "5176af831f22073e1e0012e3",
+      "idOrganization": "515c52a01071a6096b000680",
+      "name": "FRENCH",
+      "nodeId": "ari:cloud:trello::label/workspace/515c52a01071a6096b000680/65a69ef7128bbe9b3123689c",
+      "color": "purple_light",
+      "uses": 2290
+    },
+    {
+      "id": "65ba0fca608afe05de600231",
+      "idBoard": "5176af831f22073e1e0012e3",
+      "idOrganization": "515c52a01071a6096b000680",
+      "name": "WEB ARTICLE",
+      "nodeId": "ari:cloud:trello::label/workspace/515c52a01071a6096b000680/65ba0fca608afe05de600231",
+      "color": "lime",
+      "uses": 2594
+    }
+  ],
+  "idLabels": [
+    "65a69ef7128bbe9b3123689c",
+    "65ba0fca608afe05de600231"
+  ],
+  "manualCoverAttachment": true,
+  "name": "PT_FR",
+  "nodeId": "ari:cloud:trello::card/workspace/515c52a01071a6096b000680/661059ed2dff8fb73a6cb734",
+  "pinned": false,
+  "pos": 49152,
+  "shortLink": "u2jJMN73",
+  "shortUrl": "https://trello.com/c/u2jJMN73",
+  "start": null,
+  "subscribed": false,
+  "url": "https://trello.com/c/u2jJMN73/9879-ptfr",
+  "cover": {
+    "idAttachment": null,
+    "color": "purple",
+    "idUploadedBackground": null,
+    "size": "normal",
+    "brightness": "light",
+    "yPosition": 0.5,
+    "idPlugin": null
+  },
+  "isTemplate": true,
+  "cardRole": null,
+  "mirrorSourceId": null
+}

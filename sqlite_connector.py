@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from card_model import TrelloCard
 
 class SQLiteConnector:
 	def __init__(self):
@@ -16,23 +17,34 @@ class SQLiteConnector:
 			return error
 	
 
-	def insert_data(self, file_name: str, ):
-		"""Inserts article data using executemany for high performance."""
+	def insert_data(self, card_obj: TrelloCard):
+		"""Inserts Trello data using executemany for high performance.
+		card_title: text,
+		card_due: text,
+		card_last_activity: text,
+		card_published: integer (0 or 1)
+		"""
+		card_title = card_obj.card_title
+		card_due = card_obj.card_due
+		card_last_activity = card_obj.card_last_activity
+		card_published = card_obj.card_published
+
+
+		
+
 		self.CURSOR.execute("""
-			CREATE TABLE IF NOT EXISTS article_data (
+			CREATE TABLE IF NOT EXISTS trello_data (
 				id INTEGER PRIMARY KEY,
-				article_title TEXT NOT NULL,
-				data_string TEXT NOT NULL,
-				label_id INTEGER NOT NULL
+				card_title TEXT NOT NULL,
+				card_due TEXT NOT NULL,
+				card_last_activity TEXT NOT NULL,
+				card_published INTEGER
 			);
 		""")
 
-		data_to_insert = [
-			(title, data_string, label_id)
-			for data_string in data
-		]
+		data_to_insert = (card_title, card_due, card_last_activity, card_published)
 		
-		sql_insert = "INSERT INTO article_data (article_title, data_string, label_id) VALUES (?, ?, ?)"
+		sql_insert = "INSERT INTO article_data (card_title, card_due, card_last_activity, card_published) VALUES (?, ?, ?, ?)"
 		rows_inserted = len(data_to_insert)
 
 		try:
@@ -43,3 +55,18 @@ class SQLiteConnector:
 			# 5. Rollback on error
 			self.CONNECTION.rollback()
 			print(f"An error occurred during insertion. Transaction rolled back: {e}")
+	
+
+	def retreive_all(self):
+		self.CURSOR.execute("SELECT card_title, card_due, card_last_activity FROM trello_data")
+		data = self.CURSOR.fetchall()
+		output = []
+		for row in data:
+			output.append(row['article_title'])
+			output.append(row['label_id'])
+		return output
+
+	def close_connection(self):
+		if self.CONNECTION:
+			self.CONNECTION.close()
+		print("Connection closed")

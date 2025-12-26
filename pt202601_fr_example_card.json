@@ -1,0 +1,116 @@
+{
+  "id": "6942d4ab303153df2a2a26f0",
+  "agent": null,
+  "badges": {
+    "attachments": 1,
+    "fogbugz": "",
+    "checkItems": 43,
+    "checkItemsChecked": 6,
+    "checkItemsEarliestDue": null,
+    "comments": 0,
+    "description": true,
+    "due": "2026-01-07T18:14:00.000Z",
+    "dueComplete": false,
+    "lastUpdatedByAi": false,
+    "start": null,
+    "externalSource": null,
+    "attachmentsByType": {
+      "trello": {
+        "board": 0,
+        "card": 0
+      }
+    },
+    "location": false,
+    "votes": 0,
+    "maliciousAttachments": 0,
+    "viewingMemberVoted": false,
+    "subscribed": false
+  },
+  "checkItemStates": [
+    {
+      "idCheckItem": "6942d4ab303153df2a2a2897",
+      "state": "complete"
+    },
+    {
+      "idCheckItem": "6942d4ab303153df2a2a2898",
+      "state": "complete"
+    },
+    {
+      "idCheckItem": "6942d4ab303153df2a2a2899",
+      "state": "complete"
+    },
+    {
+      "idCheckItem": "6942d4ab303153df2a2a289a",
+      "state": "complete"
+    },
+    {
+      "idCheckItem": "6942d4ab303153df2a2a289b",
+      "state": "complete"
+    },
+    {
+      "idCheckItem": "6942d4ab303153df2a2a28ad",
+      "state": "complete"
+    }
+  ],
+  "closed": false,
+  "dueComplete": false,
+  "dateLastActivity": "2025-12-18T18:14:34.554Z",
+  "desc": "Hello Translators,\n\n‌\n\nYou should have received an email for [FILE_LINK], inviting you to begin translating the [FILE]. The file is divided into approximately #### words for each translator, and is due by ####. Follow [this link] and click on the green “Translate” button to work on your section.\n\n‌\n\nThank you to all!\n\n‌\n\n\\---\n\n‌\n\nBonjour les traducteurs,\n\n‌\n\nVous auriez reçu un mail pour [FILE_LINK], vous invitant à commencer les traductions du [FILE]. Le fichier est divisé en environ #### mots pour chaque traducteur, et devrait être terminé le ####. Cliquez sur [ce lien] puis cliquez sur le bouton vert, « Translate », pour travailler sur votre section.\n\n‌\n\nMerci à tous !\n\nREPORTING: Weekly Report",
+  "descData": {
+    "emoji": {}
+  },
+  "due": "2026-01-07T18:14:00.000Z",
+  "dueReminder": -1,
+  "email": null,
+  "idBoard": "5176af831f22073e1e0012e3",
+  "idChecklists": [
+    "6942d4ab303153df2a2a284e",
+    "6942d4ab303153df2a2a288a",
+    "6942d4ab303153df2a2a2890",
+    "6942d4ab303153df2a2a2896",
+    "6942d4ab303153df2a2a28a4",
+    "6942d4ab303153df2a2a28ac",
+    "6942d4ab303153df2a2a28b0"
+  ],
+  "idList": "65e8858f19fccd52a6a8817c",
+  "idMembers": [],
+  "idMembersVoted": [],
+  "idShort": 21388,
+  "idAttachmentCover": null,
+  "labels": [
+    {
+      "id": "65a69ef7128bbe9b3123689c",
+      "idBoard": "5176af831f22073e1e0012e3",
+      "idOrganization": "515c52a01071a6096b000680",
+      "name": "FRENCH",
+      "nodeId": "ari:cloud:trello::label/workspace/515c52a01071a6096b000680/65a69ef7128bbe9b3123689c",
+      "color": "purple_light",
+      "uses": 2290
+    }
+  ],
+  "idLabels": [
+    "65a69ef7128bbe9b3123689c"
+  ],
+  "manualCoverAttachment": true,
+  "name": "PT202601_FR",
+  "nodeId": "ari:cloud:trello::card/workspace/515c52a01071a6096b000680/6942d4ab303153df2a2a26f0",
+  "pinned": false,
+  "pos": 1024,
+  "shortLink": "bZZog8yo",
+  "shortUrl": "https://trello.com/c/bZZog8yo",
+  "start": null,
+  "subscribed": false,
+  "url": "https://trello.com/c/bZZog8yo/21388-pt202601fr",
+  "cover": {
+    "idAttachment": null,
+    "color": "purple",
+    "idUploadedBackground": null,
+    "size": "normal",
+    "brightness": "light",
+    "yPosition": 0.5,
+    "idPlugin": null
+  },
+  "isTemplate": false,
+  "cardRole": null,
+  "mirrorSourceId": null
+}

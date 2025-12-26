@@ -7,7 +7,6 @@ crowdin_client = factory.create_crowdin_client()
 sqlite_connection = factory.create_sqlite3_connection()
 
 # When the app runs, get all sources of truth from Trello
-trello_client.get()
 
 # get the file name
 
