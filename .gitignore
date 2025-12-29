@@ -1,3 +1,9 @@
+# own excludes
+trello_output.jsonl
+pt_fr_example_card.json
+pt202601_fr_example_card.json
+app_data.db
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
