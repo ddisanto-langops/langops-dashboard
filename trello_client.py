@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import requests
 from requests.exceptions import HTTPError
@@ -8,14 +9,15 @@ class TrelloClient:
         self.api_key = os.environ.get("TRELLO_API_KEY")
         self.api_secret = os.environ.get("TRELLO_SECRET")
         self.token = os.environ.get("TRELLO_TOKEN")
+        self.board_id = os.environ.get("TRELLO_BOARD_ID")
         if self.api_key and self.api_secret and self.token:
             print("Trello client initialized")
         else:
-            raise ValueError("Error: API key, secret or token not found.")
+            raise ValueError("Error: API key, secret, token or board ID not found.")
 
-    def get_cards_on_board(self, board_id: str) -> dict:
+    def get_cards_on_board(self) -> dict:
         r = requests.get(
-            url = f"https://api.trello.com/1/boards/{board_id}/cards",
+            url = f"https://api.trello.com/1/boards/{self.board_id}/cards",
             params={
                 'key': self.api_key,
                 'token': self.token
@@ -41,8 +43,40 @@ class TrelloClient:
         except Exception as e:
             print(e)
 
+    
+    def filter_cards_by_product(self, cards: dict) -> dict:
+        filtered_cards = []
+        # Pattern to match product code (from PCG Langops Blackbird workflow)
+        pattern = r'^([A-Z-]*)([0-9]*[A-Z]*)(?=_)'
+        product_codes = [
+            'ANN',
+            'BCC',
+            'BS',
+            'CWL',
+            'KOD',
+            'LIT',
+            'LIT-S',
+            'LSS',
+            'MB',
+            'PT',
+            'PTVID',
+            'RV',
+            'SER',
+            'SMT',
+            'TB',
+            'TW'
+        ]
 
-
+        for card in cards:
+            name = card['name']
+            match_obj = re.match(pattern= pattern, string= name)
+            if match_obj:
+                prod_code = match_obj.group()
+                if prod_code in product_codes:
+                    filtered_cards.append(card)
+        
+        return filtered_cards
+    
 
 
 
