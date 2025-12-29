@@ -12,22 +12,19 @@ class TrelloClient:
             print("Trello client initialized")
 
     def get_cards_on_board(self, board_id: str) -> dict:
-        try:
-            r = requests.get(
-                url = f"https://api.trello.com/1/boards/{board_id}/cards",
-                params= {'key': self.api_key,
-                        'token': self.token
-                        }
-            )
-            print(r)
-            return r.json()
-        except HTTPError as e:
-            print(e)
-        except Exception as ex:
-            print(ex)
+        r = requests.get(
+            url = f"https://api.trello.com/1/boards/{board_id}/cards",
+            params={
+                'key': self.api_key,
+                'token': self.token
+            }
+        )
+        return r.json()
+
 
 client = TrelloClient()
 data = client.get_cards_on_board("5176af831f22073e1e0012e3")
+print(data)
 
 exit()
 
