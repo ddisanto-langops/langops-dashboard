@@ -4,3 +4,5 @@ class TrelloCard:
 		self.card_due: str = card_obj['badges']['due']
 		self.card_last_activity: str = card_obj['badges']['dateLastActivity']
 		self.card_published: int = card_obj # find custom field mapping
+		self.card_crowdin_file_id = card_obj # find mapping
+		self.card_crowdin_proj_id = card_obj # find mapping

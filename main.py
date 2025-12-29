@@ -1,10 +1,8 @@
-from factory import Factory
+
 
 LANGOPS_BOARD_ID = "5176af831f22073e1e0012e3"
-factory = Factory()
-trello_client = factory.create_trello_client()
-crowdin_client = factory.create_crowdin_client()
-sqlite_connection = factory.create_sqlite3_connection()
+
+# init all the clients
 
 # When the app runs, get all sources of truth from Trello
 
