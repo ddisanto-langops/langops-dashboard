@@ -24,7 +24,10 @@ class TrelloClient:
         )
         return r.json()
     
-    def get_card_custom_fields(self, card_id: str) -> list[dict]:
+
+    
+    
+    def get_card_custom_fields(self, card_id: str) -> dict:
         try:
             r = requests.get(
                 url= f"https://api.trello.com/1/cards/{card_id}/customFieldItems",
@@ -36,9 +39,34 @@ class TrelloClient:
                     'token': self.token
                 }
             )
-            return r.json()
+            results = r.json()
+
+            # defaults
+            published = False
+            crowdin_proj_id = None
+            crowdin_file_id = None
+
+            for item in results:
+                # Check if has "published" field and if it's checked off
+                if item['idCustomField'] == "688a48647c40d0183e053280" and item['value']['checked'] == 'true':
+                    published = True    
+                
+                # Check if has Crowdin project ID
+                if item['idCustomField'] == "694efa16d67cda3bf9fabdab" and item['value']['text']:
+                    crowdin_proj_id = item['value']['text']
+                
+                # Check if has Crowdin file ID
+                if item['idCustomField'] == "694ef9fdf5bf21eada294ef4" and item['value']['text']:
+                    crowdin_file_id = item['value']['text']
+            
+            return {'published': published, 'crowdin_proj_id': crowdin_proj_id, 'crowdin_file_id': crowdin_file_id}
+           
         except HTTPError as http_error:
             print(http_error)
+        
+        except KeyError as k:
+            print(k)
+
         except Exception as e:
             print(e)
 

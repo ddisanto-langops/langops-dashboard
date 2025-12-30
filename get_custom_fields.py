@@ -1,7 +1,10 @@
 from trello_client import TrelloClient
+from card_model import TrelloCard
 
-client = TrelloClient()
+trello_client = TrelloClient()
 
-cards = client.get_cards_on_board()
-source_of_truth = client.filter_cards_by_product(cards)
+# Remove quotes to test a card quickly
+"""fields_dict = trello_client.get_card_custom_fields("6953550fb87a67105c8e8d28")
+print(fields_dict)
+exit()"""
 
