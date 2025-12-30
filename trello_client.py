@@ -24,8 +24,6 @@ class TrelloClient:
         )
         return r.json()
     
-
-    
     
     def get_card_custom_fields(self, card_id: str) -> dict:
         try:
@@ -104,6 +102,19 @@ class TrelloClient:
         
         return filtered_cards
     
+
+    def get_card(self, card_id: str) -> object:
+        r = requests.get(
+            url= f"https://api.trello.com/1/cards/{card_id}",
+            headers={
+                "Accept": "application/json"
+            },
+            params={
+                    'key': self.api_key,
+                    'token': self.token
+                }
+        )
+        return r.json()
 
 
 

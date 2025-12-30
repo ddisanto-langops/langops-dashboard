@@ -23,6 +23,7 @@ logging.info(f"Filtered {len(filtered_cards)} cards.")
 card_objs_list = []
 
 counter = 0
+
 for card in filtered_cards:
     counter += 1
 
@@ -35,10 +36,14 @@ for card in filtered_cards:
     card_objs_list.append(trello_card_obj)
     logging.info(f"completed card {counter} of {len(filtered_cards)}.")
 
-# get the file name
+
 
 # Check for it on Crowdin
 
 # if on Crowdin, add realtime info
 
+# load into database
+
 # output to Google sheets
+
+# wrap code in Flask and test on server
