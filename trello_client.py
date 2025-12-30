@@ -2,6 +2,7 @@ import os
 import re
 import requests
 from requests.exceptions import HTTPError
+from custom_fields import *
 
 class TrelloClient:
     def __init__(self):
@@ -46,15 +47,15 @@ class TrelloClient:
 
             for item in results:
                 # Check if has "published" field and if it's checked off
-                if item['idCustomField'] == "688a48647c40d0183e053280" and item['value']['checked'] == 'true':
+                if item['idCustomField'] == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == 'true':
                     published = True    
                 
                 # Check if has Crowdin project ID
-                if item['idCustomField'] == "694efa16d67cda3bf9fabdab" and item['value']['text']:
+                if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_PROJECT and item['value']['text']:
                     crowdin_proj_id = item['value']['text']
                 
                 # Check if has Crowdin file ID
-                if item['idCustomField'] == "694ef9fdf5bf21eada294ef4" and item['value']['text']:
+                if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_FILE and item['value']['text']:
                     crowdin_file_id = item['value']['text']
             
             return {'published': published, 'crowdin_proj_id': crowdin_proj_id, 'crowdin_file_id': crowdin_file_id}
