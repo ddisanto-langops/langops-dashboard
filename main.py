@@ -30,12 +30,10 @@ for card in filtered_cards:
     # function example return: {'published': True, 'crowdin_proj_id': 65764908, 'crowdin_file_id': 2311353}
     card_custom_fields_dict = trello_client.get_card_custom_fields(card['id'])
     
-    trello_card_obj = TrelloCard(card, card_custom_fields_obj)
-    print("Appending custom fields object")
+    trello_card_obj = TrelloCard(card, card_custom_fields_dict)
+    logging.info("Appending custom fields object")
     card_objs_list.append(trello_card_obj)
-    print(f"completed card {counter} of {len(filtered_cards)}.")
-
-print(len(card_objs_list))
+    logging.info(f"completed card {counter} of {len(filtered_cards)}.")
 
 # get the file name
 
