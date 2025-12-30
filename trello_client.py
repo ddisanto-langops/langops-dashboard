@@ -1,6 +1,5 @@
 import os
 import re
-import json
 import requests
 from requests.exceptions import HTTPError
 
@@ -15,7 +14,7 @@ class TrelloClient:
         else:
             raise ValueError("Error: API key, secret, token or board ID not found.")
 
-    def get_cards_on_board(self) -> dict:
+    def get_cards_on_board(self) -> list[dict]:
         r = requests.get(
             url = f"https://api.trello.com/1/boards/{self.board_id}/cards",
             params={
@@ -25,7 +24,7 @@ class TrelloClient:
         )
         return r.json()
     
-    def get_card_custom_fields(self, card_id: str):
+    def get_card_custom_fields(self, card_id: str) -> list[dict]:
         try:
             r = requests.get(
                 url= f"https://api.trello.com/1/cards/{card_id}/customFieldItems",
@@ -44,7 +43,7 @@ class TrelloClient:
             print(e)
 
     
-    def filter_cards_by_product(self, cards: dict) -> dict:
+    def filter_cards_by_product(self, cards: list[dict]) -> list[dict]:
         filtered_cards = []
         # Pattern to match product code (from PCG Langops Blackbird workflow)
         pattern = r'^([A-Z-]*)([0-9]*[A-Z]*)(?=_)'
