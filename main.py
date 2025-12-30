@@ -40,6 +40,7 @@ for card in filtered_cards:
 
 # Check for it on Crowdin
 
+
 # if on Crowdin, add realtime info
 
 # load into database
