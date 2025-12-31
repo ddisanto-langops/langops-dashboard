@@ -1,8 +1,12 @@
 import os
 import re
+import logging
 import requests
 from requests.exceptions import HTTPError
 from custom_fields import *
+
+logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class TrelloClient:
     def __init__(self):
@@ -11,21 +15,27 @@ class TrelloClient:
         self.token = os.environ.get("TRELLO_TOKEN")
         self.board_id = os.environ.get("TRELLO_BOARD_ID")
         if self.api_key and self.api_secret and self.token:
-            print("Trello client initialized")
+            logger.info("Successfully initialized TrelloClient.")
         else:
+            logger.critical("API key, secret, token or board ID not found.")
             raise ValueError("Error: API key, secret, token or board ID not found.")
 
     def get_cards_on_board(self) -> list[dict]:
-        r = requests.get(
-            url = f"https://api.trello.com/1/boards/{self.board_id}/cards",
-            params={
-                'key': self.api_key,
-                'token': self.token
-            }
-        )
-        return r.json()
+        try:
+            r = requests.get(
+                url = f"https://api.trello.com/1/boards/{self.board_id}/cards",
+                params={
+                    'key': self.api_key,
+                    'token': self.token
+                }
+            )
+            return r.json()
+        except HTTPError as httpe:
+            logger.critical(f"Failed to fetch Trello Cards from board: {httpe}")
+        except Exception as e:
+            logger.critical(f"Failed to fetch Trello Cards from board: {e}")
     
-    
+
     def get_card_custom_fields(self, card_id: str) -> dict:
         try:
             r = requests.get(
@@ -61,13 +71,13 @@ class TrelloClient:
             return {'published': published, 'crowdin_proj_id': crowdin_proj_id, 'crowdin_file_id': crowdin_file_id}
            
         except HTTPError as http_error:
-            print(http_error)
+            logger.critical(f"HTTP error getting custom fields: {http_error}")
         
         except KeyError as k:
-            print(k)
+            logger.critical(f"Key error: {k}")
 
         except Exception as e:
-            print(e)
+            logger.critical(f"Exception while getting custom fields: {e}")
 
     
     def filter_cards(self, cards: list[dict]) -> list[dict]:
@@ -114,29 +124,29 @@ class TrelloClient:
                     if prod_code in product_codes:
                         filtered_cards.append(card)
         
+        logger.info(f"Retreived {len(filtered_cards)} cards.")
+
         return filtered_cards
     
 
     def get_card(self, card_id: str) -> object:
-        r = requests.get(
-            url= f"https://api.trello.com/1/cards/{card_id}",
-            headers={
-                "Accept": "application/json"
-            },
-            params={
-                    'key': self.api_key,
-                    'token': self.token
-                }
-        )
-        return r.json()
-
-
-
-
-
-
-
-
+        try:
+            r = requests.get(
+                url= f"https://api.trello.com/1/cards/{card_id}",
+                headers={
+                    "Accept": "application/json"
+                },
+                params={
+                        'key': self.api_key,
+                        'token': self.token
+                    }
+            )
+            return r.json()
+        
+        except HTTPError as http_error:
+            logger.critical(f"HTTP error while getting card: {http_error}")
+        except Exception as e:
+            logger.critical(f"Failed to get card: {e}")
 
 # Code to generate a JSONL file of all the Trello cards
 """client = TrelloClient()
@@ -151,5 +161,3 @@ with open("./trello_output.jsonl", "w", encoding="utf-8") as output_file:
             print(e)
         except Exception as ex:
             print(ex)"""
-
-
