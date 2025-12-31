@@ -1,7 +1,7 @@
 import logging
 import os
 from trello_client import TrelloClient
-from card_model import TrelloCard
+from product_model import TranslationProduct
 from crowdin_api import CrowdinClient
 
 # init all the clients
@@ -31,7 +31,7 @@ for card in filtered_cards:
     # function example return: {'published': True, 'crowdin_proj_id': 65764908, 'crowdin_file_id': 2311353}
     card_custom_fields_dict = trello_client.get_card_custom_fields(card['id'])
     
-    trello_card_obj = TrelloCard(card, card_custom_fields_dict)
+    trello_card_obj = TranslationProduct(card, card_custom_fields_dict)
     logging.info("Appending custom fields object")
     card_objs_list.append(trello_card_obj)
     logging.info(f"completed card {counter} of {len(filtered_cards)}.")

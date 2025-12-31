@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from card_model import TrelloCard
+from product_model import TrelloCard
 
 class SQLiteConnector:
 	def __init__(self):
