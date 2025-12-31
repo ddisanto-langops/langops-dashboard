@@ -1,5 +1,4 @@
 import os
-import json
 from product_model import TranslationProduct
 from trello_client import TrelloClient
 from crowdin_api import CrowdinClient
@@ -7,30 +6,31 @@ from crowdin_api import CrowdinClient
 trello_client = TrelloClient()
 crowdin_client = CrowdinClient(token= os.environ.get("CROWDIN_TOKEN"))
 
-trello_data = trello_client.get_card("6953550fb87a67105c8e8d28")
-print(json.dumps(trello_data))
+fetched_cards = trello_client.get_cards_on_board()
+filtered_cards = trello_client.filter_cards(fetched_cards)
 
-custom_fields = trello_client.get_card_custom_fields("6953550fb87a67105c8e8d28")
+for card in filtered_cards:
+    product = TranslationProduct(card)
+    product.set_custom_fields(card)
+    try:
+        crowdin_prog = crowdin_client.translation_status.get_file_progress(
+            fileId= product.trello_custom_crowdin_file_id,
+            projectId= product.trello_custom_crowdin_proj_id
+        )
+        product.set_crowdin_info(crowdin_prog)
+    except Exception as e:
+        print(e)
 
-card_obj = TranslationProduct(trello_data, custom_fields)
-
-crowdin_prog = crowdin_client.translation_status.get_file_progress(
-    fileId= card_obj.trello_custom_crowdin_file_id,
-    projectId= card_obj.trello_custom_crowdin_proj_id
-)
-
-card_obj.set_crowdin_info(crowdin_prog)
-
-print(
-    f"""
-Title: {card_obj.trello_title}\n
-Due: {card_obj.trello_due}\n
-Last Activity: {card_obj.trello_last_activity}\n
-Published: {card_obj.trello_custom_published}\n
-File ID: {card_obj.trello_custom_crowdin_file_id}\n
-Project ID: {card_obj.trello_custom_crowdin_proj_id}\n
-Tranlsation Progress: {card_obj.crowdin_translation_progress}\n
-Approval Progress: {card_obj.crowdin_approval_progress}\n
-Target Language: {card_obj.crowdin_target_lang}
-"""
-)
+    print(
+        f"""
+    Title: {product.trello_title}\n
+    Due: {product.trello_due}\n
+    Last Activity: {product.trello_last_activity}\n
+    Published: {product.trello_custom_published}\n
+    File ID: {product.trello_custom_crowdin_file_id}\n
+    Project ID: {product.trello_custom_crowdin_proj_id}\n
+    Tranlsation Progress: {product.crowdin_translation_progress}\n
+    Approval Progress: {product.crowdin_approval_progress}\n
+    Target Language: {product.crowdin_target_lang}
+    """
+    )

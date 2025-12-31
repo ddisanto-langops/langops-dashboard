@@ -1,6 +1,6 @@
 import os
 import sqlite3
-from product_model import TrelloCard
+from product_model import TranslationProduct
 
 class SQLiteConnector:
 	def __init__(self):
@@ -17,7 +17,7 @@ class SQLiteConnector:
 			return error
 	
 
-	def insert_data(self, card_obj: TrelloCard):
+	def insert_data(self, card_obj: TranslationProduct):
 		"""Inserts Trello data using executemany for high performance.
 		card_title: text,
 		card_due: text,

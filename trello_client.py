@@ -20,64 +20,46 @@ class TrelloClient:
             logger.critical("API key, secret, token or board ID not found.")
             raise ValueError("Error: API key, secret, token or board ID not found.")
 
+    
     def get_cards_on_board(self) -> list[dict]:
         try:
-            r = requests.get(
-                url = f"https://api.trello.com/1/boards/{self.board_id}/cards",
+            fetched_cards = requests.get(
+                url = f"https://api.trello.com/1/boards/{self.board_id}/cards?customFieldItems=true",
                 params={
                     'key': self.api_key,
                     'token': self.token
                 }
             )
-            return r.json()
+            return fetched_cards.json()
         except HTTPError as httpe:
             logger.critical(f"Failed to fetch Trello Cards from board: {httpe}")
         except Exception as e:
             logger.critical(f"Failed to fetch Trello Cards from board: {e}")
     
 
-    def get_card_custom_fields(self, card_id: str) -> dict:
-        try:
-            r = requests.get(
-                url= f"https://api.trello.com/1/cards/{card_id}/customFieldItems",
-                headers={
-                    'accept': 'application/json'
-                },
-                params={
-                    'key': self.api_key,
-                    'token': self.token
-                }
-            )
-            results = r.json()
-
+    def get_card_custom_fields(self, fetched_cards: list[dict]) -> dict:
             # defaults
             published = False
             crowdin_proj_id = None
             crowdin_file_id = None
 
-            for item in results:
+            for card in fetched_cards:
                 # Check if has "published" field and if it's checked off
-                if item['idCustomField'] == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == 'true':
-                    published = True    
+                for item in card['customFieldItems']:
+                    if  item == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == 'true':
+                        published = True    
+                    
+                    # Check if has Crowdin project ID
+                    if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_PROJECT and item['value']['text']:
+                        crowdin_proj_id = item['value']['text']
+                    
+                    # Check if has Crowdin file ID
+                    if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_FILE and item['value']['text']:
+                        crowdin_file_id = item['value']['text']
                 
-                # Check if has Crowdin project ID
-                if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_PROJECT and item['value']['text']:
-                    crowdin_proj_id = item['value']['text']
-                
-                # Check if has Crowdin file ID
-                if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_FILE and item['value']['text']:
-                    crowdin_file_id = item['value']['text']
-            
-            return {'published': published, 'crowdin_proj_id': crowdin_proj_id, 'crowdin_file_id': crowdin_file_id}
+                return {'published': published, 'crowdin_proj_id': crowdin_proj_id, 'crowdin_file_id': crowdin_file_id}
            
-        except HTTPError as http_error:
-            logger.critical(f"HTTP error getting custom fields: {http_error}")
-        
-        except KeyError as k:
-            logger.critical(f"Key error: {k}")
 
-        except Exception as e:
-            logger.critical(f"Exception while getting custom fields: {e}")
 
     
     def filter_cards(self, cards: list[dict]) -> list[dict]:
@@ -148,16 +130,3 @@ class TrelloClient:
         except Exception as e:
             logger.critical(f"Failed to get card: {e}")
 
-# Code to generate a JSONL file of all the Trello cards
-"""client = TrelloClient()
-data = client.get_cards_on_board("5176af831f22073e1e0012e3")
-
-with open("./trello_output.jsonl", "w", encoding="utf-8") as output_file:
-        try:
-            for item in data:
-                text = json.dumps(item)
-                output_file.write(f"{text}\n")
-        except UnicodeEncodeError as e:
-            print(e)
-        except Exception as ex:
-            print(ex)"""
