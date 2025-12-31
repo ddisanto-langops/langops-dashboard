@@ -20,7 +20,7 @@ filtered_cards = trello_client.filter_cards_by_product(all_cards)
 logging.info(f"Filtered {len(filtered_cards)} cards.")
 
 # Set up an empty list of card objects which will be written to the database later on
-card_objs_list = []
+products_list = []
 
 counter = 0
 
@@ -29,19 +29,23 @@ for card in filtered_cards:
 
     # The custom fields are fetched via an API call. 
     # function example return: {'published': True, 'crowdin_proj_id': 65764908, 'crowdin_file_id': 2311353}
-    card_custom_fields_dict = trello_client.get_card_custom_fields(card['id'])
+    card_custom_fields = trello_client.get_card_custom_fields(card['id'])
+    product = TranslationProduct(card, card_custom_fields)
+
+    # Get translation progress from Crowdin
+    try:
+        crowdin_info = crowdin_client.translation_status.get_file_progress(product.trello_custom_crowdin_file_id)
+        product.set_crowdin_info(crowdin_info)
+    except Exception as e:
+        logging.info(f"Error getting Crowdin info: {e}")
+        print(f"Error getting Crowdin info: {e}")
+
+    # Add the product to the list
+    products_list.append(product)
+
+    print(f"Added product {product.trello_title} to list.")
     
-    trello_card_obj = TranslationProduct(card, card_custom_fields_dict)
-    logging.info("Appending custom fields object")
-    card_objs_list.append(trello_card_obj)
-    logging.info(f"completed card {counter} of {len(filtered_cards)}.")
 
-
-
-# Check for it on Crowdin
-
-
-# if on Crowdin, add realtime info
 
 # load into database
 
