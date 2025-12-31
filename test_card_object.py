@@ -1,4 +1,5 @@
 import os
+import json
 from product_model import TranslationProduct
 from trello_client import TrelloClient
 from crowdin_api import CrowdinClient
@@ -7,6 +8,8 @@ trello_client = TrelloClient()
 crowdin_client = CrowdinClient(token= os.environ.get("CROWDIN_TOKEN"))
 
 trello_data = trello_client.get_card("6953550fb87a67105c8e8d28")
+print(json.dumps(trello_data))
+
 custom_fields = trello_client.get_card_custom_fields("6953550fb87a67105c8e8d28")
 
 card_obj = TranslationProduct(trello_data, custom_fields)

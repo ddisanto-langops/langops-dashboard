@@ -70,7 +70,16 @@ class TrelloClient:
             print(e)
 
     
-    def filter_cards_by_product(self, cards: list[dict]) -> list[dict]:
+    def filter_cards(self, cards: list[dict]) -> list[dict]:
+        """
+        The filter_cards function only accepts cards as representing a valid product
+        if they start with a valid product code and are not a template.
+        
+        :param cards: list of dicts representing all cards to be filtered (likely all cards of a given board)
+        :type cards: list[dict]
+        :return: returns a list of dicts of the filtered cards only
+        :rtype: list[dict]
+        """
         filtered_cards = []
         # Pattern to match product code (from PCG Langops Blackbird workflow)
         pattern = r'^([A-Z-]*)([0-9]*[A-Z]*)(?=_)'
@@ -95,11 +104,15 @@ class TrelloClient:
 
         for card in cards:
             name = card['name']
-            match_obj = re.match(pattern= pattern, string= name)
-            if match_obj:
-                prod_code = match_obj.group()
-                if prod_code in product_codes:
-                    filtered_cards.append(card)
+            is_template = card['isTemplate']
+            if is_template:
+                continue
+            else:
+                match_obj = re.match(pattern= pattern, string= name)
+                if match_obj:
+                    prod_code = match_obj.group()
+                    if prod_code in product_codes:
+                        filtered_cards.append(card)
         
         return filtered_cards
     

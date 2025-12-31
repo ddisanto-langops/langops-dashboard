@@ -5,6 +5,7 @@ class TranslationProduct:
 	custom_fields: the dict returned by the Trello API for a card's custom fields.
 	"""
 	def __init__(self, trello_card: dict, trello_custom_fields: dict):
+		self.trello_is_template: bool = trello_card['isTemplate']
 		self.trello_title: str = trello_card['name']
 		self.trello_due: str = trello_card['due']
 		self.trello_last_activity: str = trello_card['dateLastActivity']
@@ -13,7 +14,7 @@ class TranslationProduct:
 		self.trello_custom_crowdin_proj_id: int = trello_custom_fields['crowdin_proj_id']
 		self.crowdin_translation_progress = None
 		self.crowdin_approval_progress = None
-		self.crowdin_target_lang = None # Does Crowdin return more than one for a file?
+		self.crowdin_target_lang = None
 	
 	def set_crowdin_info(self, file_progress: dict):
 		"""

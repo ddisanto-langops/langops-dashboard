@@ -21,34 +21,43 @@ logging.info(f"Filtered {len(filtered_cards)} cards.")
 
 # Set up an empty list of card objects which will be written to the database later on
 products_list = []
-
-counter = 0
+card_counter = 0
 
 for card in filtered_cards:
-    counter += 1
 
-    # The custom fields are fetched via an API call. 
-    # function example return: {'published': True, 'crowdin_proj_id': 65764908, 'crowdin_file_id': 2311353}
-    card_custom_fields = trello_client.get_card_custom_fields(card['id'])
-    product = TranslationProduct(card, card_custom_fields)
+    # If card is not a template, continue getting info and add it to the list of products
+    # else, ignore it and move to next card
+    if card['isTemplate'] == False:
 
-    # Get translation progress from Crowdin
-    try:
-        crowdin_info = crowdin_client.translation_status.get_file_progress(product.trello_custom_crowdin_file_id)
-        product.set_crowdin_info(crowdin_info)
-    except Exception as e:
-        logging.info(f"Error getting Crowdin info: {e}")
-        print(f"Error getting Crowdin info: {e}")
+        card_counter += 1
 
-    # Add the product to the list
-    products_list.append(product)
+        # The custom fields are fetched via an API call. 
+        # function example return: {'published': True, 'crowdin_proj_id': 65764908, 'crowdin_file_id': 2311353}
+        card_custom_fields = trello_client.get_card_custom_fields(card['id'])
+        product = TranslationProduct(card, card_custom_fields)
 
-    print(f"Added product {product.trello_title} to list.")
+        # Get translation progress from Crowdin
+        try:
+            crowdin_info = crowdin_client.translation_status.get_file_progress(
+                fileId= product.trello_custom_crowdin_file_id,
+                projectId= product.trello_custom_crowdin_proj_id
+            )
+            product.set_crowdin_info(crowdin_info)
+        except Exception as e:
+            logging.info(f"Error getting Crowdin info: {e}")
+            print(f"Error getting Crowdin info: {e}")
+
+        # Add the product to the list
+        products_list.append(product)
+        logging.info(f"Added product {product.trello_title} to list.")
+        print(f"Added product {product.trello_title} to list.")
+
+        # load into database
+
+        # output to Google sheets?
     
+    else:
+        continue
 
-
-# load into database
-
-# output to Google sheets
 
 # wrap code in Flask and test on server
