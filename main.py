@@ -2,7 +2,10 @@ import os
 import logging
 from trello_client import TrelloClient
 from crowdin_api import CrowdinClient
-from product_model import TranslationProduct
+from requests.exceptions import HTTPError
+from models import init_db, get_db_session, TranslationProduct
+
+
 
 # Configure logging
 logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
@@ -12,8 +15,14 @@ logger = logging.getLogger(__name__)
 trello_client = TrelloClient()
 crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
 
-def update_database():
-    # When the app runs, get all sources of truth from Trello
+
+
+def main():
+    # Create tables if they don't exist
+    init_db()
+    session = get_db_session()
+
+    # Get all cards from Trello board as source of truth
     logger.info("Fetching all cards...")
     all_cards = trello_client.get_cards_on_board()
 
@@ -35,24 +44,34 @@ def update_database():
         
         product.set_custom_fields(card)
 
-        # Get translation progress from Crowdin
-        try:
-            logger.info("Fetching translation status from Crowdin...")
-            crowdin_info = crowdin_client.translation_status.get_file_progress(
-                fileId= product.trello_custom_crowdin_file_id,
-                projectId= product.trello_custom_crowdin_proj_id
-            )
-            product.set_crowdin_info(crowdin_info)
-        except Exception as e:
-            logger.info(f"Crowdin translation status not available: {e}")
+        # Get translation progress from Crowdin if we have file ID and project ID
+        if product.trello_custom_crowdin_file_id and product.trello_custom_crowdin_proj_id:
+            try:
+                logger.info("Fetching translation status from Crowdin...")
+                crowdin_info = crowdin_client.translation_status.get_file_progress(
+                    fileId= product.trello_custom_crowdin_file_id,
+                    projectId= product.trello_custom_crowdin_proj_id
+                )
+                product.set_crowdin_info(crowdin_info)
+            except HTTPError as http_error:
+                logger.warning(f"Crowdin status not available: {http_error}")
+            except Exception as e:
+                logger.info(f"Crowdin status not available: {e}")
 
 
 
         # load into database
-        
+        session.merge(product)
+    
+    session.commit() # Save everything to the .db file
+    session.close()
+    logger.info("Database sync complete.")
 
-        # output to Google sheets?
+    # output to Google sheets?
 
 
 
     # wrap code in Flask and test on server
+
+
+main()
