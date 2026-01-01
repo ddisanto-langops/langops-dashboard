@@ -1,5 +1,7 @@
 function fetch_products() {
-  
+  // Gets products from the database. Does not refresh database.
+  // To refresh the products in the database, use request_refresh(),
+  // and then call fetch_products() again.
   const server_url = "langops-ca.com/langops-dashboard/products"
   try {
     const response = UrlFetchApp.fetch(server_url);
@@ -38,5 +40,17 @@ function fetch_products() {
   }
   catch (error) {
     console.log(`Error fetching products: ${error}`);
+  }
+}
+
+function request_refresh() {
+  const refreshURL = "langops-ca.com/langops-dashboard/refresh"
+  const options = {'method': 'post'}
+  try {
+    const request = UrlFetchApp.fetch(refreshURL, options)
+    console.log(`Refresh successful: ${request}`)
+
+  } catch (error) {
+    console.log(`Error refreshing database: ${error}`)
   }
 }

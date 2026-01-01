@@ -5,8 +5,8 @@ See in real time the progress of all files being worked on as well as deadlines,
 
 ## Implementation
 **Main endpoints:** 
-- Get products: <domain>/langops-dashboard/products
-- Manually refresh the databse: <domain>/refresh
+- Get products: /langops-dashboard/products
+- Manually refresh the databse: /langops-dashboard/refresh
 
 **Overview**
 - Trello is the source of truth for all products, with translation status updates from Crowdin where available.
