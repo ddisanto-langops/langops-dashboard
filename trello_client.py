@@ -109,24 +109,3 @@ class TrelloClient:
         logger.info(f"Retreived {len(filtered_cards)} cards.")
 
         return filtered_cards
-    
-
-    def get_card(self, card_id: str) -> object:
-        try:
-            r = requests.get(
-                url= f"https://api.trello.com/1/cards/{card_id}",
-                headers={
-                    "Accept": "application/json"
-                },
-                params={
-                        'key': self.api_key,
-                        'token': self.token
-                    }
-            )
-            return r.json()
-        
-        except HTTPError as http_error:
-            logger.critical(f"HTTP error while getting card: {http_error}")
-        except Exception as e:
-            logger.critical(f"Failed to get card: {e}")
-

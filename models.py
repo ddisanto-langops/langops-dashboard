@@ -18,6 +18,8 @@ def get_db_session():
 class TranslationProduct(Base):
 	"""
 	Acts as both a Python data object and a SQL database table.
+	If you're looking for the JSON fields which a frontend e.g. website needs,
+	they can be foudn in the to_dict() function.
 	"""
 	__tablename__ = 'translation_products'
 
@@ -70,7 +72,7 @@ class TranslationProduct(Base):
 	
 	def to_dict(self):
 		"""Serializes the TranslationProduct object into a format that can 
-		be sent over the web as JSON."""
+		be sent over the web as JSON. These are the fields which a frontend needs to look for."""
 		return {
 			"id": self.id,
 			"title": self.trello_title,
