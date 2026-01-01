@@ -17,11 +17,11 @@ def get_products():
     session = get_db_session()
     try:
         products = session.query(TranslationProduct).all()
+        logger.info("Fetch complete.")
         return jsonify([p.to_dict() for p in products]), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     finally:
-        logger.info("Fetch complete.")
         session.close()
 
 @app.route('/langops-dashboard/refresh', methods=['POST'])
@@ -30,11 +30,10 @@ def refresh():
     logger.info("Refreshing database...")
     try:
         update_database()
+        logger.info("Refresh complete.")
         return jsonify({'status': 'success', 'message': 'Sync completed'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    finally:
-        logger.info("Refresh complete.")
 
 if __name__ == '__main__':
     # Used for local development only
