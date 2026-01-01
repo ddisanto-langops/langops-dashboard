@@ -5,8 +5,6 @@ from crowdin_api import CrowdinClient
 from requests.exceptions import HTTPError
 from models import init_db, get_db_session, TranslationProduct
 
-
-
 # Configure logging
 logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,8 +12,6 @@ logger = logging.getLogger(__name__)
 # init API clients
 trello_client = TrelloClient()
 crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
-
-
 
 def main():
     # Create tables if they don't exist
@@ -66,5 +62,4 @@ def main():
     session.close()
     logger.info("Database sync complete.")
 
-
-    # wrap code in Flask and test on server
+# wrap code in Flask and test on server
