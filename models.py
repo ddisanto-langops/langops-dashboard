@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, String, Integer, Float, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from custom_fields import *
 
-# --- Database Setup ---
+# Database Setup
 Base = declarative_base()
 engine = create_engine('sqlite:///translations.db', echo=False)
 SessionLocal = sessionmaker(bind=engine)
@@ -13,7 +13,8 @@ def init_db():
 def get_db_session():
 	return SessionLocal()
 
-# --- The Model ---
+# Model of translation products
+# Includes the database columns derived from the class
 class TranslationProduct(Base):
 	"""
 	Acts as both a Python data object and a SQL database table.
@@ -38,6 +39,7 @@ class TranslationProduct(Base):
 		self.trello_title = trello_card['name']
 		self.trello_due = trello_card.get('due')
 		self.trello_last_activity = trello_card.get('dateLastActivity')
+		
 		# isTemplate is used for filtering but doesn't need a DB column
 		self.trello_is_template = trello_card.get('isTemplate', False)
 
@@ -65,3 +67,19 @@ class TranslationProduct(Base):
 			self.crowdin_target_lang = item['data']['languageId']
 			self.crowdin_translation_progress = item['data']['translationProgress']
 			self.crowdin_approval_progress = item['data']['approvalProgress']
+	
+	def to_dict(self):
+		"""Serializes the TranslationProduct object into a format that can 
+		be sent over the web as JSON."""
+		return {
+			"id": self.id,
+			"title": self.trello_title,
+			"target_language": self.crowdin_target_lang,
+			"due_by": self.trello_due,
+			"last_activity": self.trello_last_activity,
+			"published": self.trello_custom_published,
+			"progress": {
+				"translation": self.crowdin_translation_progress,
+				"approval": self.crowdin_approval_progress
+			}
+		}
