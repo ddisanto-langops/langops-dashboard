@@ -20,6 +20,7 @@ def get_products():
         logger.info("Fetch complete.")
         return jsonify([p.to_dict() for p in products]), 200
     except Exception as e:
+        logger.error(e)
         return jsonify({'error': str(e)}), 500
     finally:
         session.close()
@@ -33,6 +34,7 @@ def refresh():
         logger.info("Refresh complete.")
         return jsonify({'status': 'success', 'message': 'Sync completed'}), 200
     except Exception as e:
+        logger.error(e)
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
