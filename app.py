@@ -14,6 +14,7 @@ init_db()
 @app.route('/langops-dashboard/products', methods=['GET'])
 def get_products():
     logger.info("Fetching products...")
+    init_db()
     session = get_db_session()
     try:
         products = session.query(TranslationProduct).all()
