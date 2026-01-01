@@ -2,3 +2,4 @@ flask
 gunicorn
 requests
 crowdin-api-client
+SQLAlchemy
