@@ -1,5 +1,6 @@
 import os
 import logging
+from flask import Flask
 from trello_client import TrelloClient
 from crowdin_api import CrowdinClient
 from requests.exceptions import HTTPError
@@ -13,9 +14,10 @@ logger = logging.getLogger(__name__)
 trello_client = TrelloClient()
 crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
 
+# Create tables if they don't exist
+init_db()
+
 def main():
-    # Create tables if they don't exist
-    init_db()
 
     # Init the database session
     session = get_db_session()
