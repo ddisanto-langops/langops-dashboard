@@ -24,7 +24,7 @@ class TrelloClient:
     def get_cards_on_board(self) -> list[dict]:
         try:
             fetched_cards = requests.get(
-                url = f"https://api.trello.com/1/boards/{self.board_id}/cards?customFieldItems=true",
+                url = f"https://api.trello.com/1/boards/{self.board_id}/cards?customFieldItems=true&attachments=true&attachment_fields=all",
                 params={
                     'key': self.api_key,
                     'token': self.token

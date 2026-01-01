@@ -7,6 +7,7 @@ function fetch_products() {
     const values = data_array.map(item => [
       item.title,
       item.target_language,
+      item.crowdin_url,
       item.due_by,
       item.last_activity,
       item.published,
@@ -17,6 +18,7 @@ function fetch_products() {
     const headers = [[
       "Title",
       "Target Language",
+      "Crowdin URL",
       "Due",
       "Last Activity",
       "Published",
