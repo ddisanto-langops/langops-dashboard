@@ -20,6 +20,8 @@ crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
 def main():
     # Create tables if they don't exist
     init_db()
+
+    # Init the database session
     session = get_db_session()
 
     # Get all cards from Trello board as source of truth
@@ -31,8 +33,6 @@ def main():
     # You can find all the supported product codes in trello_client.py
     logger.info("Filtering the cards...")
     filtered_cards = trello_client.filter_cards(all_cards)
-
-    # Init the database session
 
     card_counter = 0
 
@@ -58,20 +58,13 @@ def main():
             except Exception as e:
                 logger.info(f"Crowdin status not available: {e}")
 
-
-
-        # load into database
+        # load product into database
         session.merge(product)
     
-    session.commit() # Save everything to the .db file
+    # save to the .db file
+    session.commit()
     session.close()
     logger.info("Database sync complete.")
 
-    # output to Google sheets?
-
-
 
     # wrap code in Flask and test on server
-
-
-main()
