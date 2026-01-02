@@ -53,7 +53,7 @@ class TranslationProduct(Base):
 	def set_custom_fields(self, card: dict):
 			# Check if has "published" field and if it's checked off
 		for item in card['customFieldItems']:
-			if  item == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == 'true':
+			if  item == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == True:
 				self.trello_custom_published = True    
 			
 			# Check if has Crowdin project ID
