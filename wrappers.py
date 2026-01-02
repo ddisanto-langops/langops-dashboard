@@ -10,7 +10,7 @@ def require_x_auth(f):
     def decorated_function(*args, **kwargs):
         # 1. Grab the key from the 'X-Auth' header
         provided_key = request.headers.get('X-Auth')
-        secret_key = os.environ.get('X-Auth')
+        secret_key = os.environ.get('X_AUTH')
 
         # 2. Validate
         if provided_key and provided_key == secret_key:
