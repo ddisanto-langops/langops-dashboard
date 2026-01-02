@@ -5,7 +5,6 @@ import requests
 from requests.exceptions import HTTPError
 from custom_fields import *
 
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class TrelloClient:

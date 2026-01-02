@@ -5,7 +5,6 @@ from crowdin_api import CrowdinClient
 from requests.exceptions import HTTPError
 from models import TranslationProduct, init_db, get_db_session
 
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize API clients outside the function so they persist

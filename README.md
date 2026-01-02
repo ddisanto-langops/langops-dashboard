@@ -8,6 +8,9 @@ See in real time the progress of all files being worked on as well as deadlines,
 - Get products: /langops-dashboard/products
 - Manually refresh the databse: /langops-dashboard/refresh
 
+**Authorization**
+All endpoints for this app expect you to set 'X-Auth' header and provide the correct key.
+
 **Overview**
 - Trello is the source of truth for all products, with translation status updates from Crowdin where available.
 - A local database is saved to the server, and can be manually re-created in the event of a crash.

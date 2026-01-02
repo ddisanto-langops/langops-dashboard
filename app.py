@@ -1,7 +1,8 @@
 import logging
 from flask import Flask, jsonify
-from models import TranslationProduct, get_db_session, init_db
+from wrappers import require_x_auth
 from update_database import update_database
+from models import TranslationProduct, get_db_session, init_db
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ logger = logging.getLogger(__name__)
 init_db()
 
 @app.route('/langops-dashboard/products', methods=['GET'])
+@require_x_auth
 def get_products():
     logger.info("Fetching products...")
     session = get_db_session()
@@ -25,7 +27,9 @@ def get_products():
     finally:
         session.close()
 
+
 @app.route('/langops-dashboard/refresh', methods=['POST'])
+@require_x_auth
 def refresh():
     """Endpoint for Google Sheets to trigger a data update"""
     logger.info("Refreshing database...")

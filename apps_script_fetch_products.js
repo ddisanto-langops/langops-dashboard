@@ -4,7 +4,13 @@ function fetch_products() {
   // and then call fetch_products() again.
   const server_url = "langops-ca.com/langops-dashboard/products"
   try {
-    const response = UrlFetchApp.fetch(server_url);
+    const requestOptions = {
+    'method': 'post',
+    'headers': {
+      'X-Auth': scriptProperties.getProperty('X_AUTH')
+    }
+  }
+    const response = UrlFetchApp.fetch(server_url, requestOptions);
     const data_array = JSON.parse(response)
     const values = data_array.map(item => [
       item.title,
@@ -45,7 +51,12 @@ function fetch_products() {
 
 function request_refresh() {
   const refreshURL = "langops-ca.com/langops-dashboard/refresh"
-  const options = {'method': 'post'}
+  const options = {
+    'method': 'post',
+    'headers': {
+      'X-Auth': scriptProperties.getProperty('X_AUTH')
+    }
+  }
   try {
     const request = UrlFetchApp.fetch(refreshURL, options)
     console.log(`Refresh successful: ${request}`)
