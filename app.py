@@ -1,3 +1,4 @@
+import sys
 import logging
 from flask import Flask, jsonify
 from wrappers import require_x_auth
@@ -6,7 +7,7 @@ from models import TranslationProduct, get_db_session, init_db
 
 app = Flask(__name__)
 
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
+logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO, stream= sys.stdout)
 logger = logging.getLogger(__name__)
 
 # Initialize database tables once at startup

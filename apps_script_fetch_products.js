@@ -1,16 +1,22 @@
+// IMPORTANT NOTE: For authorization to work, you must set the X-Auth header.
+// In Google Apps Script, the value of the X-Auth key must be set in the settings -> properties of the project.
+// See readme for more details.
+
 function fetch_products() {
   // Gets products from the database. Does not refresh database.
   // To refresh the products in the database, use request_refresh(),
   // and then call fetch_products() again.
   const server_url = "langops-ca.com/langops-dashboard/products"
-  try {
-    const requestOptions = {
-    'method': 'post',
+  const properties = PropertiesService.getScriptProperties();
+  const xAuth = properties.getProperty('X-Auth')
+  const options = {
+    'method': 'get',
     'headers': {
-      'X-Auth': scriptProperties.getProperty('X_AUTH')
+      'X-Auth': xAuth
     }
   }
-    const response = UrlFetchApp.fetch(server_url, requestOptions);
+  try {
+    const response = UrlFetchApp.fetch(server_url, options);
     const data_array = JSON.parse(response)
     const values = data_array.map(item => [
       item.title,
@@ -51,10 +57,12 @@ function fetch_products() {
 
 function request_refresh() {
   const refreshURL = "langops-ca.com/langops-dashboard/refresh"
+  const properties = PropertiesService.getScriptProperties();
+  const xAuth = properties.getProperty('X-Auth')
   const options = {
     'method': 'post',
     'headers': {
-      'X-Auth': scriptProperties.getProperty('X_AUTH')
+      'X-Auth': xAuth
     }
   }
   try {
