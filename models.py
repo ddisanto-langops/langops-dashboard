@@ -100,6 +100,9 @@ class TranslationProduct(Base):
 		central_time = ZoneInfo('America/Chicago')
 		now_ct = datetime.now(central_time)
 
+		older_than_7_days = True
+		overdue = False
+
 		# parse last activity and due date into UTC datetime objects
 		if self.trello_last_activity:
 			last_activity_utc = datetime.fromisoformat(self.trello_last_activity)
