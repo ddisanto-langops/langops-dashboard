@@ -116,7 +116,7 @@ class TranslationProduct(Base):
 			overdue = now_ct > due_ct
 		
 		# Main comparison cases
-		if self.trello_due and not self.trello_custom_published and overdue:
+		if self.trello_due and overdue and not self.trello_custom_published:
 				self.product_status = "Overdue"
 				
 		elif self.trello_custom_published:
