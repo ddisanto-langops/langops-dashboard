@@ -20,5 +20,6 @@ See in real time the progress of all files being worked on as well as deadlines,
 ## Timeframe
 Ideally in production by February.
 
-## Note on Deploying Updates
-When the code is changed, especially if the database and class TranslationProduct were modified, it is necessary to: 1. delete the database on the server; 2. Run a manual refresh to populate the database.
+## Note on Updates and Dependencies
+- When the database and/or class TranslationProduct are modified, it is necessary to: 1. delete the database on the server; 2. Run a manual refresh to populate the database.
+- The tzdata package doesn't need to be imported but is a dependency of built-in zoneinfo for some systems and recommended for cross-platform compatibility. If not present, you will likely see a ZoneInfoNotFoundError.
