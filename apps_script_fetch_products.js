@@ -1,5 +1,6 @@
 // IMPORTANT NOTE: For authorization to work, you must set the X-Auth header.
 // In Google Apps Script, the value of the X-Auth key must be set in the settings -> properties of the project.
+// For the server to accept the request, you must also set X_AUTH in the app's environment variables.
 // See readme for more details.
 
 function fetch_products() {
