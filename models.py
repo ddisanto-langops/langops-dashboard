@@ -1,8 +1,11 @@
+import logging
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from sqlalchemy import create_engine, Column, String, Integer, Float, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from custom_fields import *
+
+logger = logging.getLogger(__name__)
 
 # Database Setup
 Base = declarative_base()
@@ -41,20 +44,25 @@ class TranslationProduct(Base):
 
 	def __init__(self, trello_card: dict):
 		"""Standard Python initialization from Trello Card JSON"""
-		# isTemplate is used for filtering but doesn't need a DB column
-		self.trello_is_template = trello_card.get('isTemplate', False)
-		self.id = trello_card['id']
-		self.trello_title = trello_card['name']
-		self.product_status = None
-		self.id = trello_card('id')
-		self.trello_title = trello_card.get('name')
-		self.trello_due = trello_card.get('due')
-		self.trello_last_activity = trello_card.get('dateLastActivity')
-		for item in trello_card['attachments']:
-			if item['name'] == 'Crowdin':
-				self.crowdin_url = item['url']
-			else:
-				self.crowdin_url = None
+		try:
+			# isTemplate is used for filtering but doesn't need a DB column
+			self.trello_is_template = trello_card.get('isTemplate', False)
+			self.id = trello_card.get('id')
+			self.trello_title = trello_card.get('name')
+			self.product_status = None
+			self.id = trello_card.get('id')
+			self.trello_title = trello_card.get('name')
+			self.trello_due = trello_card.get('due')
+			self.trello_last_activity = trello_card.get('dateLastActivity')
+			for item in trello_card['attachments']:
+				if item['name'] == 'Crowdin':
+					self.crowdin_url = item['url']
+				else:
+					self.crowdin_url = None
+		except KeyError as k:
+			logger.critical(f"Failed to initialize class TranslationProduct: {k}")
+		except Exception as e:
+			logger.critical(f"Failed to initialize class TranslationProduct: {e}")
 
 	def set_custom_fields(self, card: dict):
 			# Check if has "published" field and if it's checked off

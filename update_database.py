@@ -8,8 +8,12 @@ from models import TranslationProduct, init_db, get_db_session
 logger = logging.getLogger(__name__)
 
 # Initialize API clients outside the function so they persist
-trello_client = TrelloClient()
-crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
+try:
+    trello_client = TrelloClient()
+    crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
+    logger.info("Trello and Crowdin clients successfully initialized.")
+except Exception as e:
+    logger.critical(f"Error initializing one or more clients: {e}")
 
 def update_database():
     """
