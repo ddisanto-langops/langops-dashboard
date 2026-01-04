@@ -103,53 +103,37 @@ class TranslationProduct(Base):
 		older_than_7_days = True
 		overdue = False
 
-		# parse last activity and due date into UTC datetime objects
+		# Calculate Activity Age
 		if self.trello_last_activity:
 			last_activity_utc = datetime.fromisoformat(self.trello_last_activity)
-			
-			# convert to central time
 			last_activity_ct = last_activity_utc.astimezone(central_time)
-			
-			# create a duration of desired comparison length
-			seven_days = timedelta(days=7)
-			
-			# Was last activity more than 7 days ago?
-			if now_ct - last_activity_ct > seven_days:
-				older_than_7_days = True
-			else:
-				older_than_7_days = False
+			older_than_7_days = (now_ct - last_activity_ct) > timedelta(days=7)
 		
-		# is the product overdue?
+		# Calculate Overdue Status
 		if self.trello_due:
 			due_utc = datetime.fromisoformat(self.trello_due)
 			due_ct = due_utc.astimezone(central_time)
-			if now_ct > due_ct:
-				overdue = True
-			else:
-				overdue = False
+			overdue = now_ct > due_ct
 		
 		# Main comparison cases
-		# has due date, is past due date and not published: OVERDUE
-		if self.trello_due and self.trello_custom_published == False and overdue == True:
-			self.product_status = "Overdue"
-		# "published" is checked: COMPLETED
-		elif self.trello_custom_published == True:
+		if self.trello_due and not self.trello_custom_published and overdue:
+				self.product_status = "Overdue"
+				
+		elif self.trello_custom_published:
 			self.product_status = "Completed"
-		# last Trello activity within 7 days and not yet published: IN PROGRESS
-		elif older_than_7_days == False and self.trello_custom_published == False:
+				
+		elif not older_than_7_days and not self.trello_custom_published:
 			self.product_status = "In Progress"
-		# last Trello activity more than 7 days ago but has translation progress in Crowdin: IN PROGRESS
-		elif older_than_7_days == True and self.crowdin_translation_progress and self.crowdin_translation_progress > 0:
+				
+		elif older_than_7_days and (self.crowdin_translation_progress or 0) > 0:
 			self.product_status = "In Progress"
-		# last Trello activty more than 7 days ago, translation not started, and not published: TO-DO
-		elif older_than_7_days == True and self.crowdin_translation_progress and self.crowdin_translation_progress == 0 and not self.trello_custom_published:
+				
+		elif older_than_7_days:
 			self.product_status = "To-Do"
-		# last Trello activty more than 7 days ago and no Crowdin info: TO-DO
-		elif older_than_7_days == True and not self.crowdin_translation_progress:
-			self.product_status = "To-Do" 
+				
 		else:
 			self.product_status = "Unknown"
-		
+
 		return self.product_status
 		
 	
