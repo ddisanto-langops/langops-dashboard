@@ -5,7 +5,6 @@ import requests
 from requests.exceptions import HTTPError
 from custom_fields import *
 
-logging.basicConfig(format='%(asctime)s %(name)s %(levelname)s %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class TrelloClient:
@@ -24,7 +23,7 @@ class TrelloClient:
     def get_cards_on_board(self) -> list[dict]:
         try:
             fetched_cards = requests.get(
-                url = f"https://api.trello.com/1/boards/{self.board_id}/cards?customFieldItems=true",
+                url = f"https://api.trello.com/1/boards/{self.board_id}/cards?customFieldItems=true&attachments=true&attachment_fields=all",
                 params={
                     'key': self.api_key,
                     'token': self.token
@@ -109,24 +108,3 @@ class TrelloClient:
         logger.info(f"Retreived {len(filtered_cards)} cards.")
 
         return filtered_cards
-    
-
-    def get_card(self, card_id: str) -> object:
-        try:
-            r = requests.get(
-                url= f"https://api.trello.com/1/cards/{card_id}",
-                headers={
-                    "Accept": "application/json"
-                },
-                params={
-                        'key': self.api_key,
-                        'token': self.token
-                    }
-            )
-            return r.json()
-        
-        except HTTPError as http_error:
-            logger.critical(f"HTTP error while getting card: {http_error}")
-        except Exception as e:
-            logger.critical(f"Failed to get card: {e}")
-

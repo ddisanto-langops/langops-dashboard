@@ -20,6 +20,8 @@ def get_db_session():
 class TranslationProduct(Base):
 	"""
 	Acts as both a Python data object and a SQL database table.
+	If you're looking for the JSON fields which a frontend e.g. website needs,
+	they can be found in the to_dict() function.
 	"""
 	__tablename__ = 'translation_products'
 
@@ -34,23 +36,30 @@ class TranslationProduct(Base):
 	crowdin_translation_progress = Column(Float, default=0.0)
 	crowdin_approval_progress = Column(Float, default=0.0)
 	crowdin_target_lang = Column(String)
+	crowdin_url = Column(String)
 	product_status = Column(String)
 
 	def __init__(self, trello_card: dict):
 		"""Standard Python initialization from Trello Card JSON"""
+		# isTemplate is used for filtering but doesn't need a DB column
+		self.trello_is_template = trello_card.get('isTemplate', False)
+		self.id = trello_card['id']
+		self.trello_title = trello_card['name']
 		self.product_status = None
 		self.id = trello_card('id')
 		self.trello_title = trello_card.get('name')
 		self.trello_due = trello_card.get('due')
 		self.trello_last_activity = trello_card.get('dateLastActivity')
-		
-		# isTemplate is used for filtering but doesn't need a DB column
-		self.trello_is_template = trello_card.get('isTemplate', False)
+		for item in trello_card['attachments']:
+			if item['name'] == 'Crowdin':
+				self.crowdin_url = item['url']
+			else:
+				self.crowdin_url = None
 
 	def set_custom_fields(self, card: dict):
 			# Check if has "published" field and if it's checked off
 		for item in card['customFieldItems']:
-			if  item == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == 'true':
+			if item['idCustomField'] == CUSTOM_FIELD_PUBLISHED and item['value']['checked'] == 'true':
 				self.trello_custom_published = True    
 			
 			# Check if has Crowdin project ID
@@ -59,7 +68,8 @@ class TranslationProduct(Base):
 			
 			# Check if has Crowdin file ID
 			if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_FILE and item['value']['text']:
-				self.trello_custom_crowdin_file_id = item['value']['text']     
+				self.trello_custom_crowdin_file_id = item['value']['text']
+
 
 	def set_crowdin_info(self, file_progress: dict):
 		"""
@@ -133,11 +143,12 @@ class TranslationProduct(Base):
 	
 	def to_dict(self):
 		"""Serializes the TranslationProduct object into a format that can 
-		be sent over the web as JSON."""
+		be sent over the web as JSON. These are the fields which a frontend needs to look for."""
 		return {
 			"id": self.id,
 			"title": self.trello_title,
 			"target_language": self.crowdin_target_lang,
+			"crowdin_url": self.crowdin_url,
 			"due_by": self.trello_due,
 			"last_activity": self.trello_last_activity,
 			"published": self.trello_custom_published,

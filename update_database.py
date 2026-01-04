@@ -3,7 +3,7 @@ import logging
 from trello_client import TrelloClient
 from crowdin_api import CrowdinClient
 from requests.exceptions import HTTPError
-from models import get_db_session, TranslationProduct
+from models import TranslationProduct, init_db, get_db_session
 
 logger = logging.getLogger(__name__)
 
@@ -15,6 +15,7 @@ def update_database():
     """
     Orchestrates the fetch from Trello/Crowdin and syncs to local DB.
     """
+    init_db()
     session = get_db_session()
     
     try:
