@@ -97,6 +97,7 @@ class TranslationProduct(Base):
 		Outputs can be 'To-Do', 'In Progress' or 'Completed'.
 		"""
 		# current central time
+		central_time = ZoneInfo('America/Chicago')
 		now_ct = datetime.now(central_time)
 
 		# parse last activity and due date into UTC datetime objects
@@ -104,7 +105,6 @@ class TranslationProduct(Base):
 			last_activity_utc = datetime.fromisoformat(self.trello_last_activity)
 			
 			# convert to central time
-			central_time = ZoneInfo('America/Chicago')
 			last_activity_ct = last_activity_utc.astimezone(central_time)
 			
 			# create a duration of desired comparison length
