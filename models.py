@@ -145,7 +145,7 @@ class TranslationProduct(Base):
 		elif older_than_7_days == True and not self.crowdin_translation_progress:
 			self.product_status = "To-Do" 
 		else:
-			self.product_status = None
+			self.product_status = "Unknown"
 		
 		return self.product_status
 		
