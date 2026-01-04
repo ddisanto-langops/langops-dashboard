@@ -26,10 +26,9 @@ def update_database():
             product = TranslationProduct(card)
             product.set_custom_fields(card)
 
-            # Crowdin Logic
+            # Get Crowdin status if available
             if product.trello_custom_crowdin_file_id and product.trello_custom_crowdin_proj_id:
                 try:
-                    logger.info(f"Fetching Crowdin status for {product.trello_title}...")
                     crowdin_info = crowdin_client.translation_status.get_file_progress(
                         fileId=product.trello_custom_crowdin_file_id,
                         projectId=product.trello_custom_crowdin_proj_id
@@ -39,6 +38,9 @@ def update_database():
                     logger.warning(f"Crowdin unavailable for {product.trello_title}: {http_error}")
                 except Exception as e:
                     logger.warning(f"Crowdin unavailable for {product.trello_title}: {e}")
+            
+            # Compute the product's status and save to class properties
+            product.determine_status()
 
             # Upsert into DB
             session.merge(product)
