@@ -10,10 +10,14 @@ logger = logging.getLogger(__name__)
 # Initialize API clients outside the function so they persist
 try:
     trello_client = TrelloClient()
-    crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_API_KEY'))
-    logger.info("Trello and Crowdin clients successfully initialized.")
+    crowdin_client = CrowdinClient(token=os.environ.get('CROWDIN_TOKEN'))
+    if trello_client and crowdin_client:
+        logger.info("Trello and Crowdin clients successfully initialized.")
+    else:
+        logger.critical("One or more API keys not found. Please check your .env file.")
 except Exception as e:
     logger.critical(f"Error initializing one or more clients: {e}")
+    
 
 def update_database():
     """
