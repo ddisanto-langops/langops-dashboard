@@ -126,8 +126,8 @@ class TranslationProduct(Base):
 				overdue = False
 		
 		# Main comparison cases
-		# Past due date and not published: OVERDUE
-		if self.trello_custom_published == False and overdue == True:
+		# has due date, is past due date and not published: OVERDUE
+		if self.trello_due and self.trello_custom_published == False and overdue == True:
 			self.product_status = "Overdue"
 		# "published" is checked: COMPLETED
 		elif self.trello_custom_published == True:
