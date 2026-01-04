@@ -13,9 +13,16 @@ See in real time the progress of all files being worked on as well as deadlines,
 - Get products: /langops-dashboard/products
 - Manually refresh the databse: /langops-dashboard/refresh
 
-**Authorization**
+## Authorization
+**X-Auth**
 - All endpoints for this app expect you to set 'X-Auth' header and provide the correct key.
 - For the Google Sheets frontend to work, you must set 'X-Auth' in 'Script Properties' at the bottom of the project's settings.
+- On the server, you must define X_AUTH in the app's environment variables, otherwise the request will be rejected.
+**API Keys and OAUTH**
+- Crowdin requires a standard API Key
+- Trello requires three-legged OAUTH. You must generate a power-up, and use the API key, token and secret (found in the powerup's admin page).
+**Other ENV Variables**
+- This app is meant to work with ONE Trello board. You must define the board's ID in the app's environment variables.
 
 ## Timeframe
 Ideally in production by February.
