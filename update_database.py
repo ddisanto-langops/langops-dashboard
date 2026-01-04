@@ -40,9 +40,9 @@ def update_database():
                     )
                     product.set_crowdin_info(crowdin_info)
                 except HTTPError as http_error:
-                    logger.warning(f"Crowdin unavailable for {product.trello_title}: {http_error}")
+                    logger.warning(f"Crowdin data unavailable for {product.trello_title}: {http_error}")
                 except Exception as e:
-                    logger.warning(f"Crowdin unavailable for {product.trello_title}: {e}")
+                    logger.warning(f"Crowdin data unavailable for {product.trello_title}: {e}")
             
             # Compute the product's status and save to class properties
             product.determine_status()
