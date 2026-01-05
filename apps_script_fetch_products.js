@@ -18,8 +18,9 @@ function fetch_products() {
   try {
     const response = UrlFetchApp.fetch(server_url, options);
     const data_array = JSON.parse(response)
-    const values = data_array.map(item => [
+    const data = data_array.map(item => [
       item.title,
+      item.trello_url,
       item.target_language,
       item.status,
       item.crowdin_url,
@@ -32,6 +33,7 @@ function fetch_products() {
 
     const headers = [[
       "Title",
+      "Trello URL",
       "Target Language",
       "Product Status",
       "Crowdin URL",
@@ -49,7 +51,7 @@ function fetch_products() {
     headersRange.setValues(headers);
 
     const dataRange = sheet.getRange(24,1,values.length, headers[0].length);
-    dataRange.setValues(values);
+    dataRange.setValues(data);
     
   }
   catch (error) {
