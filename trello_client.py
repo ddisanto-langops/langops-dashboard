@@ -3,7 +3,7 @@ import re
 import logging
 import requests
 from requests.exceptions import HTTPError
-from custom_fields import *
+from constants import *
 
 logger = logging.getLogger(__name__)
 
@@ -74,25 +74,7 @@ class TrelloClient:
         filtered_cards = []
         # Pattern to match product code (from PCG Langops Blackbird workflow)
         pattern = r'^([A-Z-]*)([0-9]*[A-Z]*)(?=_)'
-        product_codes = [
-            'ANN',
-            'BCC',
-            'BS',
-            'CWL',
-            'KOD',
-            'LIT',
-            'LIT-S',
-            'LSS',
-            'MB',
-            'PT',
-            'PTVID',
-            'RV',
-            'SER',
-            'SMT',
-            'TB',
-            'TW'
-        ]
-
+        
         for card in cards:
             name = card['name']
             is_template = card['isTemplate']
@@ -101,8 +83,8 @@ class TrelloClient:
             else:
                 match_obj = re.match(pattern= pattern, string= name)
                 if match_obj:
-                    prod_code = match_obj.group()
-                    if prod_code in product_codes:
+                    prod_code = match_obj.group(1)
+                    if prod_code in PRODUCT_CODES:
                         filtered_cards.append(card)
         
         logger.info(f"Retreived {len(filtered_cards)} cards.")
