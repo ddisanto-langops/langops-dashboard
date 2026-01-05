@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from sqlalchemy import create_engine, Column, String, Integer, Float, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
-from custom_fields import *
+from constants import *
 
 logger = logging.getLogger(__name__)
 
@@ -31,6 +31,8 @@ class TranslationProduct(Base):
 	# Database Columns
 	id = Column(String, primary_key=True)
 	trello_title = Column(String)
+	trello_target_lang = Column(String)
+	trello_url = Column(String)
 	trello_due = Column(String)
 	trello_last_activity = Column(String)
 	trello_custom_published = Column(Boolean, default=False)
@@ -38,7 +40,6 @@ class TranslationProduct(Base):
 	trello_custom_crowdin_proj_id = Column(Integer)
 	crowdin_translation_progress = Column(Float, default=0.0)
 	crowdin_approval_progress = Column(Float, default=0.0)
-	crowdin_target_lang = Column(String)
 	crowdin_url = Column(String)
 	product_status = Column(String)
 
@@ -47,6 +48,7 @@ class TranslationProduct(Base):
 		try:
 			# isTemplate is used for filtering but doesn't need a DB column
 			self.trello_is_template = trello_card.get('isTemplate', False)
+			self.trello_url = trello_card.get('url')
 			self.id = trello_card.get('id')
 			self.trello_title = trello_card.get('name')
 			self.product_status = None
@@ -77,6 +79,12 @@ class TranslationProduct(Base):
 			# Check if has Crowdin file ID
 			if item['idCustomField'] == CUSTOM_FIELD_CROWDIN_FILE and item['value']['text']:
 				self.trello_custom_crowdin_file_id = item['value']['text']
+		
+		if card['labels']:
+			for item in card['labels']:
+				if item['id'] in TRELLO_LANGUAGE_IDS:
+					self.trello_target_lang = item['name']
+
 
 
 	def set_crowdin_info(self, file_progress: dict):
@@ -143,7 +151,8 @@ class TranslationProduct(Base):
 		return {
 			"id": self.id,
 			"title": self.trello_title,
-			"target_language": self.crowdin_target_lang,
+			"trello_url": self.trello_url,
+			"target_language": self.trello_target_lang,
 			"crowdin_url": self.crowdin_url,
 			"due_by": self.trello_due,
 			"last_activity": self.trello_last_activity,
