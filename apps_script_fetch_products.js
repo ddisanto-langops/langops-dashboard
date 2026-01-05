@@ -6,7 +6,7 @@ function fetch_products() {
   // Gets products from the database. Does not refresh database.
   // To refresh the products in the database, use request_refresh(),
   // and then call fetch_products() again.
-  const server_url = "langops-ca.com/langops-dashboard/products"
+  const endpoint = "langops-ca.com/langops-dashboard/products"
   const properties = PropertiesService.getScriptProperties();
   const xAuth = properties.getProperty('X-Auth')
   const options = {
@@ -16,11 +16,10 @@ function fetch_products() {
     }
   }
   try {
-    const response = UrlFetchApp.fetch(server_url, options);
+    const response = UrlFetchApp.fetch(endpoint, options);
     const data_array = JSON.parse(response)
     const data = data_array.map(item => [
-      item.title,
-      item.trello_url,
+      `=HYPERLINK("${item.trello_url}", "${item.title}")`,
       item.target_language,
       item.status,
       item.crowdin_url,
@@ -33,7 +32,6 @@ function fetch_products() {
 
     const headers = [[
       "Title",
-      "Trello URL",
       "Target Language",
       "Product Status",
       "Crowdin URL",
@@ -50,7 +48,7 @@ function fetch_products() {
     const headersRange = sheet.getRange(23,1, 1, headers[0].length);
     headersRange.setValues(headers);
 
-    const dataRange = sheet.getRange(24,1,values.length, headers[0].length);
+    const dataRange = sheet.getRange(24,1,data.length, headers[0].length);
     dataRange.setValues(data);
     
   }
@@ -60,7 +58,7 @@ function fetch_products() {
 }
 
 function request_refresh() {
-  const refreshURL = "langops-ca.com/langops-dashboard/refresh"
+  const refreshEndpoint = "langops-ca.com/langops-dashboard/refresh"
   const properties = PropertiesService.getScriptProperties();
   const xAuth = properties.getProperty('X-Auth')
   const options = {
@@ -70,7 +68,7 @@ function request_refresh() {
     }
   }
   try {
-    const request = UrlFetchApp.fetch(refreshURL, options)
+    const request = UrlFetchApp.fetch(refreshEndpoint, options)
     console.log(`Refresh successful: ${request}`)
 
   } catch (error) {
