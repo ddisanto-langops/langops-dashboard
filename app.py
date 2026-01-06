@@ -41,7 +41,3 @@ def refresh():
     except Exception as e:
         logger.error(e)
         return jsonify({'error': str(e)}), 500
-
-if __name__ == '__main__':
-    # Used for local development only
-    app.run(host="0.0.0.0", port=5000, debug=True)
