@@ -25,5 +25,6 @@ TRELLO_LANGUAGE_IDS = [
     "65a69f0bd7a48a7be8f06855", # German
     "545bcbf174d650d56706a84b", # Spanish
     "65fde7c2fc62ec46d36d5d1e", # Portuguese
-    "6602d06bb42a2329238c5e84" # Dutch
+    "6602d06bb42a2329238c5e84", # Dutch
+    "668ea91e9d95af525d18f039" # Italian
 ]
