@@ -2,6 +2,19 @@
 // In Google Apps Script, the value of the X-Auth key must be set in the settings -> properties of the project.
 // See readme for more details.
 
+function button() {
+  // Assign to the refresh button in Google Sheets frontend
+  // Synchronously refreshes the database and then fetches the products
+  try {
+    request_refresh();
+    fetch_products();
+  }
+  catch (error) {
+    console.log(`Error getting or displaying data: ${error}`)
+  }
+  
+}
+
 function fetch_products() {
   // Gets products from the database. Does not refresh database.
   // To refresh the products in the database, use request_refresh(),
@@ -44,11 +57,8 @@ function fetch_products() {
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sheet = ss.getSheetByName("Raw Data");
-    
-    const headersRange = sheet.getRange(23,1, 1, headers[0].length);
-    headersRange.setValues(headers);
 
-    const dataRange = sheet.getRange(24,1,data.length, headers[0].length);
+    const dataRange = sheet.getRange(15,1,data.length, headers[0].length);
     dataRange.setValues(data);
     
   }
