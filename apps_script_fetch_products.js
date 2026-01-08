@@ -56,7 +56,7 @@ function fetch_products() {
     ]];
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getSheetByName("Raw Data");
+    const sheet = ss.getSheetByName("Tracker");
 
     const dataRange = sheet.getRange(15,1,data.length, headers[0].length);
     dataRange.setValues(data);
