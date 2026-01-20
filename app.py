@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 # Initialize database tables once at startup
 init_db()
 
-@app.route('/langops-dashboard/products', methods=['GET'])
+@app.route('/products', methods=['GET'])
 @require_x_auth
 def get_products():
     logger.info("Fetching products...")
@@ -29,7 +29,7 @@ def get_products():
         session.close()
 
 
-@app.route('/langops-dashboard/refresh', methods=['POST'])
+@app.route('/refresh', methods=['POST'])
 @require_x_auth
 def refresh():
     """Endpoint for Google Sheets to trigger a data update"""

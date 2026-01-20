@@ -19,7 +19,7 @@ function fetch_products() {
   // Gets products from the database. Does not refresh database.
   // To refresh the products in the database, use request_refresh(),
   // and then call fetch_products() again.
-  const endpoint = "langops-ca.com/langops-dashboard/products"
+  const endpoint = "dashboard.langops-ca.com/products"
   const properties = PropertiesService.getScriptProperties();
   const xAuth = properties.getProperty('X-Auth')
   const options = {
@@ -68,7 +68,7 @@ function fetch_products() {
 }
 
 function request_refresh() {
-  const refreshEndpoint = "langops-ca.com/langops-dashboard/refresh"
+  const refreshEndpoint = "dashboard.langops-ca.com/refresh"
   const properties = PropertiesService.getScriptProperties();
   const xAuth = properties.getProperty('X-Auth')
   const options = {
