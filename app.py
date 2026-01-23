@@ -1,7 +1,6 @@
 import sys
 import logging
 from flask import Flask, jsonify
-from wrappers import require_x_auth
 from update_database import update_database
 from models import TranslationProduct, get_db_session, init_db
 

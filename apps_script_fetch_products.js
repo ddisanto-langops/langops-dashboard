@@ -19,13 +19,16 @@ function fetch_products() {
   // Gets products from the database. Does not refresh database.
   // To refresh the products in the database, use request_refresh(),
   // and then call fetch_products() again.
-  const endpoint = "dashboard.langops-ca.com/products"
+  const endpoint = "https://dashboard.langops-ca.com/products"
   const properties = PropertiesService.getScriptProperties();
-  const xAuth = properties.getProperty('X-Auth')
+  const cfAccessId = properties.getProperty('CF-Access-Client-Id');
+  const cfClientSecret = properties.getProperty('CF-Access-Client-Secret');
   const options = {
     'method': 'get',
     'headers': {
-      'X-Auth': xAuth
+      'CF-Access-Client-Id': cfAccessId,
+      'CF-Access-Client-Secret': cfClientSecret,
+      'Accept': 'application/json'
     }
   }
   try {
@@ -68,13 +71,16 @@ function fetch_products() {
 }
 
 function request_refresh() {
-  const refreshEndpoint = "dashboard.langops-ca.com/refresh"
+  const refreshEndpoint = "https://dashboard.langops-ca.com/refresh"
   const properties = PropertiesService.getScriptProperties();
-  const xAuth = properties.getProperty('X-Auth')
+  const cfAccessId = properties.getProperty('CF-Access-Client-Id');
+  const cfClientSecret = properties.getProperty('CF-Access-Client-Secret');
   const options = {
     'method': 'post',
     'headers': {
-      'X-Auth': xAuth
+      'CF-Access-Client-Id': cfAccessId,
+      'CF-Access-Client-Secret': cfClientSecret,
+      'Accept': 'application/json'
     }
   }
   try {
