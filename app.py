@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 init_db()
 
 @app.route('/products', methods=['GET'])
-@require_x_auth
 def get_products():
     logger.info("Fetching products...")
     session = get_db_session()
@@ -30,7 +29,6 @@ def get_products():
 
 
 @app.route('/refresh', methods=['POST'])
-@require_x_auth
 def refresh():
     """Endpoint for Google Sheets to trigger a data update"""
     logger.info("Refreshing database...")
