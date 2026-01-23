@@ -4,7 +4,7 @@
 See in real time the progress of all files being worked on as well as deadlines, leveraging Trello and Crowdin APIs.
 
 ## Timeframe
-Ideally in production by February 2026.
+Initial demonstrator ideally in production by February 2026.
 
 ## Overview
 - Trello is the source of truth for all products, with translation status updates from Crowdin where available.
@@ -14,10 +14,6 @@ Ideally in production by February 2026.
 ## Endpoints
 - Get products: /langops-dashboard/products
 - Manually refresh the databse: /langops-dashboard/refresh
-
-## Authorization
-### X-Auth
-All endpoints for this app expect you to set 'X-Auth' header and provide the correct key. For the Google Sheets frontend to work, you must set 'X-Auth' in 'Script Properties' at the bottom of the project's settings. On the server, you must define X_AUTH in the app's environment variables, otherwise the request will be rejected.  
 
 ### Environment Variables  
 Crowdin requires a standard API Key. Trello requires three-legged OAUTH. You must generate a power-up, and use the API key, token and secret (found in the powerup's admin page).  
