@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 # Initialize database tables once at startup
 init_db()
 
-@app.route('/products', methods=['GET'])
+@app.route('/getproducts', methods=['GET'])
 def get_products():
     logger.info("Fetching products...")
     session = get_db_session()
