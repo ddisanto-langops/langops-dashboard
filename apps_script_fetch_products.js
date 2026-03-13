@@ -19,7 +19,7 @@ function fetch_products() {
   // Gets products from the database. Does not refresh database.
   // To refresh the products in the database, use request_refresh(),
   // and then call fetch_products() again.
-  const endpoint = "https://dashboard.langops-ca.com/products"
+  const endpoint = "https://products.pcglangops.com/getproducts"
   const properties = PropertiesService.getScriptProperties();
   const cfAccessId = properties.getProperty('CF-Access-Client-Id');
   const cfClientSecret = properties.getProperty('CF-Access-Client-Secret');
@@ -71,7 +71,7 @@ function fetch_products() {
 }
 
 function request_refresh() {
-  const refreshEndpoint = "https://dashboard.langops-ca.com/refresh"
+  const refreshEndpoint = "https://products.pcglangops.com/refresh"
   const properties = PropertiesService.getScriptProperties();
   const cfAccessId = properties.getProperty('CF-Access-Client-Id');
   const cfClientSecret = properties.getProperty('CF-Access-Client-Secret');
